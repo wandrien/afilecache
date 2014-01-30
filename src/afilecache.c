@@ -323,8 +323,10 @@ static int command_delete(const char * cache_path, const char * cache_id)
     cache_entry_path_t cache_entry_path;
     cache_id_to_path(cache_path, cache_id, &cache_entry_path);
 
-    if ((unlink(cache_entry_path.fullpath) < 0) && errno != ENOENT)
+    if ((unlink(cache_entry_path.fullpath) < 0))
     {
+        if (errno == ENOENT)
+            return RET_MISS;
         perrorf("%s: failed to unlink %s", progname, cache_entry_path.fullpath);
         return RET_FILE_OPS;
     }
@@ -338,13 +340,72 @@ static int command_clean(const char * cache_path, int max_size_mb)
     return RET_INTERNAL;
 }
 
+#define TOSTR(s) #s
 
-#define USAGE \
-"Usage:\n" \
-"\tafilecache <cache directory> put <id> <file path>\n" \
-"\tafilecache <cache directory> get <id> <file path>\n" \
-"\tafilecache <cache directory> delete <id>\n" \
-"\tafilecache <cache directory> clean <max size in MB>\n"
+const char * USAGE = 
+"Version 0.1\n"
+"Usage:\n"
+"    afilecache <cache directory> put <ID> <file path>\n"
+"    afilecache <cache directory> get <ID> <file path>\n"
+"    afilecache <cache directory> delete <ID>\n"
+/*"\tafilecache <cache directory> clean <max size in MB>\n" XXX: NOT IMPLEMENTED*/
+"\n"
+"afilecache is a utility to atomically put files in a cache directory.\n"
+"\n"
+"When running,  afilecache acquires a lock on <cache directory>/.lock,\n"
+"so no race condition  between simultaneously running instances of the\n"
+"program are possible.\n"
+"\n"
+"COMMANDS\n"
+"    afilecache <cache directory> put <ID> <file path>\n"
+"    Put a file located at <file path> into a <cache directory> with an\n"
+"    identifier <ID>.\n"
+"\n"
+"    afilecache <cache directory> get <ID> <file path>\n"
+"    Look up a file identified by <ID> in a <cache directory> and copy it\n"
+"    to <file path>.\n"
+"    If <ID> is missing in the cache, afilecache exits with code 2.\n"
+"    Before copying the file to <file path>, afilecache unlinks <file path>.\n"
+"    If copying has failed, afilecache tries to unlink partially copied file\n"
+"    at <file path> too.\n"
+"\n"
+"    afilecache <cache directory> delete <ID>\n"
+"    Delete a file identified by <ID> from a <cache directory>.\n"
+"    If <ID> is missing in the cache, exits with code 2.\n"
+"\n"
+"EXIT CODES\n"
+"   0 command completed successfully\n"
+"   1 invalid command line arguments\n"
+"   2 missing <ID>\n"
+"   3 internal error\n"
+"   4 <cache directory> not found or not a directory\n"
+"   5 file operation failed\n"
+"   6 lock failed\n"
+"\n"
+"BUGS\n"
+"   Please report bugs at <igeekless@gmail.com>.\n"
+"\n"
+"Copyright 2014 Vadim Ushakov <igeekless@gmail.com>\n"
+"\n"
+"Permission is hereby granted, free of charge, to any person obtaining a \n"
+"copy of this software and associated documentation files (the \"Software\"), \n"
+"to deal in the Software without restriction, including without limitation \n"
+"the rights to use, copy, modify, merge, publish, distribute, sublicense, \n"
+"and/or sell copies of the Software, and to permit persons to whom the \n"
+"Software is furnished to do so, subject to the following conditions:\n"
+"\n"
+"The above copyright notice and this permission notice shall be included in \n"
+"all copies or substantial portions of the Software.\n"
+"\n"
+"THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR \n"
+"IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, \n"
+"FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL \n"
+"THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER \n"
+"LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING \n"
+"FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER \n"
+"DEALINGS IN THE SOFTWARE.\n"
+"\n"
+;
 
 static void usage(void)
 {
