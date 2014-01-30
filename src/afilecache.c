@@ -10,9 +10,9 @@
 #include <stdlib.h>
 
 
-int cp(const char *to, const char *from)
+static int cp(const char *to, const char *from)
 {
-    int fd_to, fd_from;
+    int fd_to = -1, fd_from = -1;
     ssize_t nread;
     int saved_errno;
     const int buf_size = 4096 * 64;
@@ -81,7 +81,7 @@ int cp(const char *to, const char *from)
 }
 
 
-const char * progname = "afilecache";
+static const char * progname = "afilecache";
 
 static void perrorf(const char * format, ...)
 {
@@ -206,7 +206,7 @@ static char * encode_id(const char * id)
     return buffer.str;
 }
 
-char * get_subdir_for_id(const char * id)
+static char * get_subdir_for_id(const char * id)
 {
     unsigned base = ('z' - 'a');
 
