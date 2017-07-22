@@ -385,7 +385,7 @@ const char * USAGE =
 "    If <ID> is missing in the cache, exits with code 2.\n"
 "\n"
 "EXIT CODES\n"
-"   0 command completed successfully\n"
+"   0 operation completed successfully\n"
 "   1 invalid command line arguments\n"
 "   2 missing <ID>\n"
 "   3 internal error\n"
