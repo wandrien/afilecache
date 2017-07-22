@@ -354,7 +354,7 @@ static int command_clean(const char * cache_path, int max_size_mb)
 #define TOSTR(s) #s
 
 const char * USAGE = 
-"Version 0.1\n"
+"Version 0.1.1\n"
 "Usage:\n"
 "    afilecache <cache directory> put <ID> <file path>\n"
 "    afilecache <cache directory> get <ID> <file path>\n"
