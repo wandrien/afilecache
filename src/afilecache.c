@@ -110,7 +110,7 @@ static void str_buffer_extend(str_buffer_t * buffer, size_t inc_len)
 
     if (new_len < buffer->len)
     {
-        fprintf(stderr, "%s: Internal error: new_len overflow (%u + %u -> %u)\n", progname,
+        fprintf(stderr, "%s: Internal error: new_len overflow (%zu + %zu -> %zu)\n", progname,
             buffer->len, inc_len, new_len);
         abort();
     }
@@ -123,7 +123,7 @@ static void str_buffer_extend(str_buffer_t * buffer, size_t inc_len)
 
     if (!buffer->str)
     {
-        fprintf(stderr, "%s: Internal error: failed to allocate %u bytes\n", progname, buffer->size);
+        fprintf(stderr, "%s: Internal error: failed to allocate %zu bytes\n", progname, buffer->size);
         abort();
     }
 }
