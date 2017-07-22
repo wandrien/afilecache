@@ -344,6 +344,9 @@ static int command_delete(const char * cache_path, const char * cache_id)
 
 static int command_clean(const char * cache_path, int max_size_mb)
 {
+    /* TODO: implement me! */
+    (void)(cache_path);
+    (void)(max_size_mb);
     fprintf(stderr, "%s: Not implemented\n", progname);
     return RET_INTERNAL;
 }
