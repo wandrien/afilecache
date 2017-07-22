@@ -385,7 +385,7 @@ const char * USAGE =
 "BUGS\n"
 "   Please report bugs at <igeekless@gmail.com>.\n"
 "\n"
-"Copyright 2014 Vadim Ushakov <igeekless@gmail.com>\n"
+"Copyright 2014-2017 Vadim Ushakov <igeekless@gmail.com>\n"
 "\n"
 "Permission is hereby granted, free of charge, to any person obtaining a \n"
 "copy of this software and associated documentation files (the \"Software\"), \n"
