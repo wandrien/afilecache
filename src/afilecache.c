@@ -106,7 +106,15 @@ typedef struct _str_buffer_t {
 
 static void str_buffer_extend(str_buffer_t * buffer, size_t inc_len)
 {
-    int new_len = buffer->len + inc_len;
+    size_t new_len = buffer->len + inc_len;
+
+    if (new_len < buffer->len)
+    {
+        fprintf(stderr, "%s: Internal error: new_len overflow (%u + %u -> %u)\n", progname,
+            buffer->len, inc_len, new_len);
+        abort();
+    }
+
     if (buffer->size > 1 && new_len < buffer->size - 1)
         return;
 
